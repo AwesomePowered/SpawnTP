@@ -42,7 +42,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		Player p = ev.getPlayer();
 		//Dont TP new players.
 		if (p.hasPlayedBefore()) {
-			p.teleport(p.getWorld().getSpawnLocation());
+			p.teleport(p.getWorld().getSpawnLocation().add(0.5,0.5,0.5));
 		}			
 	}
 }
