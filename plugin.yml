@@ -1,4 +1,8 @@
 name: SpawnTP
 author: LaxWasHere
-version: 1.0
+version: 1.2
 main: net.lazlecraft.spawntp.SpawnTP
+commands:
+    ssetspawn:
+        description: Sets the spawn point
+        aliases: sss
