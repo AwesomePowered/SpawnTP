@@ -1,5 +1,7 @@
 package net.lazlecraft.spawntp;
 
+import net.lazlecraft.spawntp.Metrics;
+import java.io.IOException;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -12,11 +14,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class SpawnTP extends JavaPlugin implements Listener {
 	
-	public String prefix = "§6§l[§4§lSpawnTP§6§l] ";
+	public String prefix = "ï¿½6ï¿½l[ï¿½4ï¿½lSpawnTPï¿½6ï¿½l] ";
 	
 	public void onEnable(){
 		getServer().getPluginManager().registerEvents(this, this);
-	}
+		try {
+                    Metrics metrics = new Metrics(this);
+                    metrics.start();
+                } 
+                catch (IOException e) {}
+	} 
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (!(sender instanceof Player)) {
