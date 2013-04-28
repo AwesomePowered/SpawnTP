@@ -2,6 +2,8 @@ package net.lazlecraft.spawntp;
 
 import net.lazlecraft.spawntp.Metrics;
 import java.io.IOException;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -16,7 +18,10 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	
 	public float sYaw;
 	public float sPitch;
-	
+	public String sWorld;
+	public double sX;
+	public double sY;
+	public double sZ;
 	public String prefix = "§6§l[§4§lSpawnTP§6§l] ";
 	
 	public void onEnable(){
@@ -26,12 +31,15 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		//Get config values.
 		sYaw = getConfig().getInt("SpawnYaw");
 		sPitch = getConfig().getInt("SpawnPitch");
+		sX = getConfig().getDouble("SpawnX");
+		sY = getConfig().getDouble("SpawnY");
+		sZ = getConfig().getDouble("SpawnZ");
+		sWorld = getConfig().getString("SpawnWorld");
 		//Metrics
-		getServer().getPluginManager().registerEvents(this, this);
-		try {
+		getServer().getPluginManager().registerEvents(this, this); try {
                     Metrics metrics = new Metrics(this);
                     metrics.start();
-                }
+        }
                 catch (IOException e) {}
 	} 
 	
@@ -43,16 +51,18 @@ public class SpawnTP extends JavaPlugin implements Listener {
     	Player p = (Player)sender;
         if (((commandLabel.equalsIgnoreCase("setspawn")) || commandLabel.equalsIgnoreCase("sss")) && (sender.hasPermission("spawntp.setspawn"))) {
         	Location l = p.getLocation();
-        	int x = l.getBlockX();
-        	int y = l.getBlockY();
-        	int z = l.getBlockZ();
+        	getConfig().set("SpawnX", Integer.valueOf(l.getBlockX()));
+        	getConfig().set("SpawnY", Integer.valueOf(l.getBlockY()));
+        	getConfig().set("SpawnZ", Integer.valueOf(l.getBlockZ()));
         	getConfig().set("SpawnYaw", Float.valueOf(l.getYaw()));
         	getConfig().set("SpawnPitch", Float.valueOf(l.getPitch()));
-        	p.getWorld().setSpawnLocation(x, y, z);
+        	getConfig().set("SpawnWorld", String.valueOf(l.getWorld().getName()));
+        	saveConfig();
         	p.sendMessage(prefix + ChatColor.GREEN + "Spawn set!");
         }
         else if (commandLabel.equalsIgnoreCase("spawn") && (sender.hasPermission("spawntp.spawn"))) {
-        	p.teleport(p.getWorld().getSpawnLocation().add(0.5,0.5,0.5), sYaw, sPitch);
+        	Location SpawnLoc = new Location(Bukkit.getServer().getWorld(sWorld), sX, sY, sZ, sYaw, sPitch);
+        	p.teleport(SpawnLoc);
         }
         else if (commandLabel.equalsIgnoreCase("spawntp")) {
         	p.sendMessage(prefix + ChatColor.GOLD + "This plugin is made by the almighty LaxWasHere");
@@ -64,10 +74,8 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
 		Player p = ev.getPlayer();
-		//Dont TP new players.
-		if (p.hasPlayedBefore()) {
-			p.teleport(p.getWorld().getSpawnLocation().add(0.5,0.5,0.5), sYaw, sPitch);
-		}			
+			Location SpawnLoc = new Location(Bukkit.getServer().getWorld(sWorld), sX, sY, sZ, sYaw, sPitch);
+			p.teleport(SpawnLoc);		
 	}
 }
 //LaxWasHere
