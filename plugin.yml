@@ -3,15 +3,17 @@ author: LaxWasHere
 version: 1.3
 main: net.lazlecraft.spawntp.SpawnTP
 commands:
-    ssetspawn:
+    setspawn:
         description: Sets the spawn point
         aliases: sss
         permission: spawntp.setspawn
         permission-message: You may not set the spawn.
     spawn:
         description: Sends you to the world spawn.
-        permissions: spawntp.setspawn
+        permissions: spawntp.spawn
         permission-message: You may not go to spawn!
         default: true
     spawntp:
         description: Tells you info about the plugin.
+    sspawn:
+        description: Sends you to the server spawn (hub server)
