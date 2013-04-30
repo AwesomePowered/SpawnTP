@@ -5,13 +5,19 @@ import java.io.IOException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SpawnTP extends JavaPlugin implements Listener {
@@ -48,6 +54,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sZ = getConfig().getDouble("SpawnZ");
 		sWorld = getConfig().getString("SpawnWorld");
 		this.saveConfig();
+		this.reloadConfig();
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -94,8 +101,22 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent ev) {
 		if (!getConfig().getBoolean("EnableJoinMessage")) {
 		ev.setJoinMessage("");
+		}
 	}
-}
+	
+	@EventHandler
+	//Thanks to http://lazle.us/11VGS5v
+	public void onJoinPlayer(PlayerJoinEvent ev) {
+		Player p = ev.getPlayer();
+		if (getConfig().getBoolean("FireworkOnJoin")) {
+			Location loc = p.getLocation();
+			Firework firework = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
+			FireworkMeta ftw = (FireworkMeta) firework.getFireworkMeta();
+			ftw.addEffects(FireworkEffect.builder().withFlicker().withTrail().withFade(Color.AQUA).withColor(Color.GREEN).with(Type.BALL_LARGE).build());
+			ftw.setPower(2);
+			firework.setFireworkMeta(ftw);
+		}
+	}
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
