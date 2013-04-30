@@ -47,6 +47,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sY = getConfig().getDouble("SpawnY");
 		sZ = getConfig().getDouble("SpawnZ");
 		sWorld = getConfig().getString("SpawnWorld");
+		this.saveConfig();
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -77,11 +78,24 @@ public class SpawnTP extends JavaPlugin implements Listener {
         }
         else if (commandLabel.equalsIgnoreCase("spawntp")) {
         	p.sendMessage(prefix + ChatColor.GOLD + "This plugin is made by the almighty LaxWasHere");
-        	p.sendMessage(prefix + "Running version " + ChatColor.RED + this.getDescription().getVersion());
+        	p.sendMessage(prefix + ChatColor.GOLD + "Running version " + ChatColor.RED + this.getDescription().getVersion());
         	confreload();
+        }
+        else if (commandLabel.equalsIgnoreCase("spawnloc") && (sender.hasPermission("spawntp.location"))) {
+        	p.sendMessage(prefix + ChatColor.GREEN + "World: " + ChatColor.GOLD + sWorld);
+        	p.sendMessage(prefix + ChatColor.GREEN + "X: " + ChatColor.GOLD + sX);
+        	p.sendMessage(prefix + ChatColor.GREEN + "Y: " + ChatColor.GOLD + sY);
+        	p.sendMessage(prefix + ChatColor.GREEN + "Z: " + ChatColor.GOLD + sZ);
         }
         return true;
 	}
+	
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent ev) {
+		if (!getConfig().getBoolean("EnableJoinMessage")) {
+		ev.setJoinMessage("");
+	}
+}
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
