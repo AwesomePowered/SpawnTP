@@ -1,0 +1,17 @@
+#Should we enable join messages? Set to false to disable it.
+EnableJoinMessage: true
+#Should we spawn a firework every time a player joins?
+FireworkOnJoin: true
+#Should we play sound to the player who joined? 
+#List of sounds can be found here http://lazle.us/SpawnTPSounds
+SoundOnJoin: false
+LoginSound: GHAST_SCREAM2 
+SoundVolume: 1
+SoundPitch: 1
+#Spawn Location
+SpawnYaw:
+SpawnPitch:
+SpawnX:
+SpawnY:
+SpawnZ:
+SpawnWorld:

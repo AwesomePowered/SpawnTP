@@ -9,6 +9,7 @@ import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
@@ -24,10 +25,11 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	
 	public float sYaw;
 	public float sPitch;
-	public String sWorld;
 	public double sX;
 	public double sY;
 	public double sZ;
+	public String sWorld;
+	public String sD;
 	public String prefix = "§6§l[§4§lSpawnTP§6§l] ";
 	
 	public void onEnable(){
@@ -53,6 +55,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sY = getConfig().getDouble("SpawnY");
 		sZ = getConfig().getDouble("SpawnZ");
 		sWorld = getConfig().getString("SpawnWorld");
+		sD = getConfig().getString("LoginSound");
 		this.saveConfig();
 		this.reloadConfig();
 	}
@@ -108,6 +111,11 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onPJ(PlayerJoinEvent ev) {
 		//Play sound
+		Player p = ev.getPlayer(); 
+		if (getConfig().getBoolean("SoundOnJoin")) {
+			Location loc = p.getLocation();
+			p.playSound(loc, Sound.valueOf(sD), getConfig().getInt("SoundVolume"), getConfig().getInt("SoundPitch"));
+		}
 	}
 	
 	//Fireworks
@@ -116,14 +124,12 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public void onJoinPlayer(PlayerJoinEvent ev) {
 		Player p = ev.getPlayer();
 		if (getConfig().getBoolean("FireworkOnJoin")) {
-			if (!p.hasPlayedBefore()) {
 			Location loc = p.getLocation();
 			Firework firework = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
 			FireworkMeta ftw = (FireworkMeta) firework.getFireworkMeta();
 			ftw.addEffects(FireworkEffect.builder().withFlicker().withTrail().withFade(Color.AQUA).withColor(Color.GREEN).with(Type.BALL_LARGE).build());
 			ftw.setPower(2);
 			firework.setFireworkMeta(ftw);
-		}
 	}
 }
 	
