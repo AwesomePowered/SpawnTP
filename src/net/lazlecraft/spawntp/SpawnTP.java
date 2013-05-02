@@ -97,6 +97,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
         return true;
 	}
 	
+	//Null Join Message.
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent ev) {
 		if (!getConfig().getBoolean("EnableJoinMessage")) {
@@ -105,10 +106,17 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	}
 	
 	@EventHandler
+	public void onPJ(PlayerJoinEvent ev) {
+		//Play sound
+	}
+	
+	//Fireworks
+	@EventHandler
 	//Thanks to http://lazle.us/11VGS5v
 	public void onJoinPlayer(PlayerJoinEvent ev) {
 		Player p = ev.getPlayer();
 		if (getConfig().getBoolean("FireworkOnJoin")) {
+			if (!p.hasPlayedBefore()) {
 			Location loc = p.getLocation();
 			Firework firework = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
 			FireworkMeta ftw = (FireworkMeta) firework.getFireworkMeta();
@@ -117,7 +125,9 @@ public class SpawnTP extends JavaPlugin implements Listener {
 			firework.setFireworkMeta(ftw);
 		}
 	}
+}
 	
+	//SpawnTP
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
 		Player p = ev.getPlayer();
