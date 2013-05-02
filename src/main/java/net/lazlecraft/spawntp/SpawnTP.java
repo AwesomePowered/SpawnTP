@@ -30,7 +30,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public double sZ;
 	public String sWorld;
 	public String sD;
-	public String prefix = "§6§l[§4§lSpawnTP§6§l] ";
+	public String prefix = "ChatColor.GOLD + ChatColor.BOLD + [+ ChatColor.RED + ChatColor.BOLD + SpawnTP + ChatColor.GOLD + ChatColor.BOLD +]";
 	
 	public void onEnable(){
 		//Config
