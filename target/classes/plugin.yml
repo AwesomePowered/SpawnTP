@@ -1,6 +1,6 @@
 name: SpawnTP
 author: LaxWasHere
-version: ${project.version}
+version: 1.4.7
 main: net.lazlecraft.spawntp.SpawnTP
 commands:
     setspawn:

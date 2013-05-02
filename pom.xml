@@ -3,7 +3,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.lazlecraft</groupId>
     <artifactId>SpawnTP</artifactId>
-    <version>1.4.7</version>
+    <version>1.4.8</version>
     <name>SpawnTP</name>
     <build>
         <defaultGoal>clean package</defaultGoal>
