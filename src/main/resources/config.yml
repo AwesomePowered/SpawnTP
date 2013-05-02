@@ -1,5 +1,5 @@
 #Should we enable join messages? Set to false to disable it.
-EnableJoinMessage: true
+EnableJoinQuitMessages: true
 #Should we spawn a firework every time a player joins?
 FireworkOnJoin: true
 #Should we play sound to the player who joined? 

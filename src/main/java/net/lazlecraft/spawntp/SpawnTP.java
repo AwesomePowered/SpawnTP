@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -103,8 +104,16 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	//Null Join Message.
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent ev) {
-		if (!getConfig().getBoolean("EnableJoinMessage")) {
+		if (!getConfig().getBoolean("EnableJoinQuitMessages")) {
 		ev.setJoinMessage("");
+		}
+	}
+	
+	//Null Quit Message
+	@EventHandler
+	public void onPlayerQuit(PlayerQuitEvent ev) {
+		if (!getConfig().getBoolean("EnableJoinQuitMessages")) {
+		ev.setQuitMessage("");
 		}
 	}
 	
