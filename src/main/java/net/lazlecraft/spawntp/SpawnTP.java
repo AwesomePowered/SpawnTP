@@ -1,8 +1,7 @@
 package net.lazlecraft.spawntp;
 
-import net.lazlecraft.spawntp.Metrics;
 import java.io.IOException;
-
+import net.lazlecraft.spawntp.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -31,7 +30,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public double sZ;
 	public String sWorld;
 	public String sD;
-	public String prefix = "ChatColor.GOLD + ChatColor.BOLD + [+ ChatColor.RED + ChatColor.BOLD + SpawnTP + ChatColor.GOLD + ChatColor.BOLD +]";
+	public String prefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "]";
 	
 	public void onEnable(){
 		//Config
