@@ -57,7 +57,6 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sY = getConfig().getDouble("SpawnY");
 		sZ = getConfig().getDouble("SpawnZ");
 		sWorld = getConfig().getString("SpawnWorld");
-		sD = getConfig().getString("LoginSound");
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -122,7 +121,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		Player p = ev.getPlayer(); 
 		if (getConfig().getBoolean("SoundOnJoin")) {
 			Location loc = p.getLocation();
-			p.playSound(loc, Sound.valueOf(sD), getConfig().getInt("SoundVolume"), getConfig().getInt("SoundPitch"));
+			p.playSound(loc, Sound.valueOf(getConfig().getString("LoginSound")), getConfig().getInt("SoundVolume"), getConfig().getInt("SoundPitch"));
 		}
 	}
 	
