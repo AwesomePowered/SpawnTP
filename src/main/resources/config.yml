@@ -5,7 +5,7 @@ FireworkOnJoin: true
 #Should we play sound to the player who joined? 
 #List of sounds can be found here http://lazle.us/SpawnTPSounds
 SoundOnJoin: false
-LoginSound: GHAST_SCREAM
+LoginSound: GHAST_MOAN
 SoundVolume: 1
 SoundPitch: 1
 #Spawn Location

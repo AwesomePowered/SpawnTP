@@ -30,7 +30,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public double sZ;
 	public String sWorld;
 	public String sD;
-	public String prefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "]";
+	public String prefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "] ";
 	
 	public void onEnable(){
 		//Config
@@ -49,6 +49,8 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	} 
 	
 	public void confreload() {
+		this.saveConfig();
+		this.reloadConfig();
 		sYaw = getConfig().getInt("SpawnYaw");
 		sPitch = getConfig().getInt("SpawnPitch");
 		sX = getConfig().getDouble("SpawnX");
@@ -56,8 +58,6 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sZ = getConfig().getDouble("SpawnZ");
 		sWorld = getConfig().getString("SpawnWorld");
 		sD = getConfig().getString("LoginSound");
-		this.saveConfig();
-		this.reloadConfig();
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
