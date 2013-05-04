@@ -29,13 +29,12 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public double sY;
 	public double sZ;
 	public String sWorld;
-	public String sD;
 	public String prefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "] ";
 	
 	public void onEnable(){
 		//Config
 		getConfig().options().copyDefaults(true);
-		this.saveConfig();
+		this.saveDefaultConfig();
 		//Get config values.
 		confreload();
 		//Register events
@@ -48,15 +47,19 @@ public class SpawnTP extends JavaPlugin implements Listener {
                 catch (IOException e) {}
 	} 
 	
-	public void confreload() {
+	public void onDisable() {
 		this.saveConfig();
-		this.reloadConfig();
-		sYaw = getConfig().getInt("SpawnYaw");
-		sPitch = getConfig().getInt("SpawnPitch");
+	}
+	
+	public void confreload() {
 		sX = getConfig().getDouble("SpawnX");
 		sY = getConfig().getDouble("SpawnY");
 		sZ = getConfig().getDouble("SpawnZ");
+		sYaw = getConfig().getInt("SpawnYaw");
+		sPitch = getConfig().getInt("SpawnPitch");
 		sWorld = getConfig().getString("SpawnWorld");
+		this.saveConfig();
+		this.reloadConfig();
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -87,7 +90,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
         }
         else if (commandLabel.equalsIgnoreCase("spawntp")) {
         	p.sendMessage(prefix + ChatColor.GOLD + "This plugin is made by the almighty LaxWasHere");
-        	p.sendMessage(prefix + ChatColor.GOLD + "Running version " + ChatColor.RED + this.getDescription().getVersion());
+        	p.sendMessage(prefix + ChatColor.GOLD + "Running version " + ChatColor.RED + ChatColor.BOLD + this.getDescription().getVersion());
         	confreload();
         }
         else if (commandLabel.equalsIgnoreCase("spawnloc") && (sender.hasPermission("spawntp.location"))) {
@@ -134,7 +137,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 			Location loc = p.getLocation();
 			Firework firework = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
 			FireworkMeta ftw = (FireworkMeta) firework.getFireworkMeta();
-			ftw.addEffects(FireworkEffect.builder().withFlicker().withTrail().withFade(Color.AQUA).withColor(Color.GREEN).with(Type.BALL_LARGE).build());
+			ftw.addEffects(FireworkEffect.builder().withFlicker().withTrail().withFade(Color.ORANGE).withColor(Color.GREEN).with(Type.BALL_LARGE).build());
 			ftw.setPower(2);
 			firework.setFireworkMeta(ftw);
 	}
