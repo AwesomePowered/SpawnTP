@@ -33,7 +33,6 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	
 	public void onEnable(){
 		//Config
-		getConfig().options().copyDefaults(true);
 		this.saveDefaultConfig();
 		//Get config values.
 		confreload();
