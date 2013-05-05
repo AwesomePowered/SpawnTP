@@ -44,10 +44,6 @@ public class SpawnTP extends JavaPlugin implements Listener {
                 catch (IOException e) {}
 	} 
 	
-	public void onDisable() {
-		this.saveConfig();
-	}
-	
 	public void confreload() {
 		sX = getConfig().getDouble("SpawnX");
 		sY = getConfig().getDouble("SpawnY");
@@ -55,7 +51,6 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sYaw = getConfig().getInt("SpawnYaw");
 		sPitch = getConfig().getInt("SpawnPitch");
 		sWorld = getConfig().getString("SpawnWorld");
-		saveDefaultConfig();
 		reloadConfig();
 	}
 
