@@ -51,8 +51,8 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sYaw = getConfig().getInt("SpawnYaw");
 		sPitch = getConfig().getInt("SpawnPitch");
 		sWorld = getConfig().getString("SpawnWorld");
-		reloadConfig();
-		saveConfig();
+		this.reloadConfig();
+		this.saveConfig();
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
