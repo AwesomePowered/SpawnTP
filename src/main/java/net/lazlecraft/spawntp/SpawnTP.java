@@ -34,8 +34,6 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public void onEnable(){
 		//Config
 		this.saveDefaultConfig();
-		//Get config values.
-		confreload();
 		//Register events
 		getServer().getPluginManager().registerEvents(this, this); 
 		//Metrics
