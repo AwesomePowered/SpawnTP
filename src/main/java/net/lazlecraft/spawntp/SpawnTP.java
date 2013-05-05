@@ -48,14 +48,14 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	} 
 	
 	public void confreload() {
-		this.saveConfig();
-		this.reloadConfig();
 		sYaw = getConfig().getInt("SpawnYaw");
 		sPitch = getConfig().getInt("SpawnPitch");
 		sX = getConfig().getDouble("SpawnX");
 		sY = getConfig().getDouble("SpawnY");
 		sZ = getConfig().getDouble("SpawnZ");
 		sWorld = getConfig().getString("SpawnWorld");
+		this.saveConfig();
+		this.reloadConfig();
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
