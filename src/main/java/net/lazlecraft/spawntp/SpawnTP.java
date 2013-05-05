@@ -33,8 +33,10 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	
 	public void onEnable(){
 		//Config
-	     getConfig().options().copyDefaults(true);
-	     this.saveConfig();
+		getConfig().options().copyDefaults(true);
+		this.saveConfig();
+		//Get config values.
+		confreload();
 		//Register events
 		getServer().getPluginManager().registerEvents(this, this); 
 		//Metrics
@@ -47,13 +49,13 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	
 	public void confreload() {
 		this.saveConfig();
+		this.reloadConfig();
+		sYaw = getConfig().getInt("SpawnYaw");
+		sPitch = getConfig().getInt("SpawnPitch");
 		sX = getConfig().getDouble("SpawnX");
 		sY = getConfig().getDouble("SpawnY");
 		sZ = getConfig().getDouble("SpawnZ");
-		sYaw = getConfig().getInt("SpawnYaw");
-		sPitch = getConfig().getInt("SpawnPitch");
 		sWorld = getConfig().getString("SpawnWorld");
-		this.reloadConfig();
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -84,7 +86,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
         }
         else if (commandLabel.equalsIgnoreCase("spawntp")) {
         	p.sendMessage(prefix + ChatColor.GOLD + "This plugin is made by the almighty LaxWasHere");
-        	p.sendMessage(prefix + ChatColor.GOLD + "Running version " + ChatColor.RED + ChatColor.BOLD + this.getDescription().getVersion());
+        	p.sendMessage(prefix + ChatColor.GOLD + "Running version " + ChatColor.RED + this.getDescription().getVersion());
         	confreload();
         }
         else if (commandLabel.equalsIgnoreCase("spawnloc") && (sender.hasPermission("spawntp.location"))) {
@@ -131,7 +133,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 			Location loc = p.getLocation();
 			Firework firework = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
 			FireworkMeta ftw = (FireworkMeta) firework.getFireworkMeta();
-			ftw.addEffects(FireworkEffect.builder().withFlicker().withTrail().withFade(Color.ORANGE).withColor(Color.GREEN).with(Type.BALL_LARGE).build());
+			ftw.addEffects(FireworkEffect.builder().withFlicker().withTrail().withFade(Color.ORANGE).withColor(Color.GREEN).with(Type.STAR).with(Type.BURST).with(Type.BALL_LARGE).build());
 			ftw.setPower(2);
 			firework.setFireworkMeta(ftw);
 	}
