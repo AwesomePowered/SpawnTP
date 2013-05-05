@@ -33,7 +33,8 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	
 	public void onEnable(){
 		//Config
-		saveDefaultConfig();
+	     getConfig().options().copyDefaults(true);
+	     this.saveConfig();
 		//Register events
 		getServer().getPluginManager().registerEvents(this, this); 
 		//Metrics
@@ -45,6 +46,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	} 
 	
 	public void confreload() {
+		this.saveConfig();
 		sX = getConfig().getDouble("SpawnX");
 		sY = getConfig().getDouble("SpawnY");
 		sZ = getConfig().getDouble("SpawnZ");
@@ -52,7 +54,6 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sPitch = getConfig().getInt("SpawnPitch");
 		sWorld = getConfig().getString("SpawnWorld");
 		this.reloadConfig();
-		this.saveConfig();
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
