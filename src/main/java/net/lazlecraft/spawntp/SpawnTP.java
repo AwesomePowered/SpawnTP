@@ -81,9 +81,13 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	confreload();
         }
         else if (commandLabel.equalsIgnoreCase("spawn") && (sender.hasPermission("spawntp.spawn"))) {
+        	if (sWorld == null)
+    			p.teleport(p.getWorld().getSpawnLocation().add(0.5,0.5,0.5));
+    		else {
         	Location SpawnLoc = new Location(Bukkit.getServer().getWorld(sWorld), sX, sY, sZ, sYaw, sPitch);
         	p.teleport(SpawnLoc);
         }
+     }
         else if (commandLabel.equalsIgnoreCase("spawntp")) {
         	p.sendMessage(prefix + ChatColor.GOLD + "This plugin is made by the almighty LaxWasHere");
         	p.sendMessage(prefix + ChatColor.GOLD + "Running version " + ChatColor.RED + this.getDescription().getVersion());
