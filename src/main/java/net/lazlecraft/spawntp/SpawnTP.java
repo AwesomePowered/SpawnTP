@@ -113,7 +113,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		ev.setQuitMessage("");
 		}
 	}
-	
+	//Sound on join
 	@EventHandler
 	public void onPJ(PlayerJoinEvent ev) {
 		//Play sound
