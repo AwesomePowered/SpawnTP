@@ -52,6 +52,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sPitch = getConfig().getInt("SpawnPitch");
 		sWorld = getConfig().getString("SpawnWorld");
 		reloadConfig();
+		saveConfig();
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
