@@ -81,14 +81,20 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	p.sendMessage(prefix + ChatColor.GREEN + "Spawn set!");
         	confreload();
         }
+        
+
         else if (commandLabel.equalsIgnoreCase("spawn") && (sender.hasPermission("spawntp.spawn"))) {
-        	if (sWorld == null)
-    			p.teleport(p.getWorld().getSpawnLocation().add(0.5,0.5,0.5));
-    		else {
-        	Location SpawnLoc = new Location(Bukkit.getServer().getWorld(sWorld), sX, sY, sZ, sYaw, sPitch);
-        	p.teleport(SpawnLoc);
-        }
+        	if(args.length == 0) {
+            	spawn(p);
+        	} else if (args.length == 1 && sender.hasPermission("spawntp.spawn.others")) {
+            		if (sender.getServer().getPlayer(args[0]) != null) {
+            			Player pp = sender.getServer().getPlayer(args[0]);
+            			spawn(pp);
+            		}
+            	else sender.sendMessage(prefix + ChatColor.RED + "Player does not exist!");
+        	}
      }
+        
         else if (commandLabel.equalsIgnoreCase("spawntp")) {
         	p.sendMessage(prefix + ChatColor.GOLD + "This plugin is made by the almighty LaxWasHere");
         	p.sendMessage(prefix + ChatColor.GOLD + "Running version " + ChatColor.RED + this.getDescription().getVersion());
@@ -157,12 +163,16 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
 		Player p = ev.getPlayer();
+		spawn(p);
+	}
+	
+	public void spawn(Player p) {
 		if (sWorld == null)
 			p.teleport(p.getWorld().getSpawnLocation().add(0.5,0.5,0.5));
 		else {
-			Location SpawnLoc = new Location(Bukkit.getServer().getWorld(sWorld), sX, sY, sZ, sYaw, sPitch);
-			p.teleport(SpawnLoc);		
-		}
-	}
+    	Location SpawnLoc = new Location(Bukkit.getServer().getWorld(sWorld), sX, sY, sZ, sYaw, sPitch);
+    	p.teleport(SpawnLoc);
+    }
+  }
 }
 //LaxWasHere
