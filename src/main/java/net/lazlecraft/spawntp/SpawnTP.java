@@ -21,6 +21,7 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class SpawnTP extends JavaPlugin implements Listener {
 	
@@ -145,19 +146,23 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	}
 	
 	//Fireworks
-	@EventHandler
 	//Thanks to http://lazle.us/11VGS5v
+	@EventHandler
 	public void onJoinPlayer(PlayerJoinEvent ev) {
-		Player p = ev.getPlayer();
-		if (getConfig().getBoolean("FireworkOnJoin")) {
-			Location loc = p.getLocation();
-			Firework firework = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
-			FireworkMeta ftw = (FireworkMeta) firework.getFireworkMeta();
-			ftw.addEffects(FireworkEffect.builder().withFlicker().withTrail().withFade(Color.ORANGE).withColor(Color.GREEN).with(Type.STAR).with(Type.BURST).with(Type.BALL_LARGE).build());
-			ftw.setPower(2);
-			firework.setFireworkMeta(ftw);
+	    final Player p = ev.getPlayer();
+	    if(getConfig().getBoolean("FireworkOnJoin")) {
+	        new BukkitRunnable() {
+	            public void run() {
+	                Location loc = p.getLocation();
+	                Firework firework = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
+	                FireworkMeta ftw = (FireworkMeta) firework.getFireworkMeta();
+	                ftw.addEffects(FireworkEffect.builder().withFlicker().withTrail().withFade(Color.YELLOW).withColor(Color.GREEN).with(Type.STAR).with(Type.BURST).with(Type.BALL_LARGE).build());
+	                ftw.setPower(2);
+	                firework.setFireworkMeta(ftw);
+	            }
+	        }.runTaskLater(this, 20L);
+	    }
 	}
-}
 	
 	//SpawnTP
 	@EventHandler
