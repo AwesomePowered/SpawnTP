@@ -33,6 +33,8 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public String sWorld;
 	public String prefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "] ";
 	
+	Updater updater = new Updater(this, "SpawnTP", this.getFile(), Updater.UpdateType.DEFAULT, false);
+	
 	public void onEnable(){
 		//Config
 		getConfig().options().copyDefaults(true);
@@ -47,6 +49,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
                     metrics.start();
         }
                 catch (IOException e) {}
+		//Update checker
 	} 
 	
 	public void confreload() {
