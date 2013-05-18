@@ -33,7 +33,6 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public String sWorld;
 	public String prefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "] ";
 	
-	Updater updater = new Updater(this, "SpawnTP", this.getFile(), Updater.UpdateType.DEFAULT, false);
 	
 	public void onEnable(){
 		//Config
@@ -49,7 +48,6 @@ public class SpawnTP extends JavaPlugin implements Listener {
                     metrics.start();
         }
                 catch (IOException e) {}
-		//Update checker
 	} 
 	
 	public void confreload() {
@@ -159,7 +157,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	                Location loc = p.getLocation();
 	                Firework firework = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
 	                FireworkMeta ftw = (FireworkMeta) firework.getFireworkMeta();
-	                ftw.addEffects(FireworkEffect.builder().withFlicker().withTrail().withFade(Color.YELLOW).withColor(Color.GREEN).with(Type.STAR).with(Type.BURST).with(Type.BALL_LARGE).build());
+	                ftw.addEffects(FireworkEffect.builder().withFlicker().withTrail().withFade(Color.ORANGE).withColor(Color.GREEN).with(Type.STAR).with(Type.BURST).with(Type.BALL_LARGE).build());
 	                ftw.setPower(2);
 	                firework.setFireworkMeta(ftw);
 	            }
@@ -169,10 +167,12 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	
 	//SpawnTP
 	@EventHandler
-	public void onJoin(PlayerJoinEvent ev) {
+	public void onJoin(PlayerJoinEvent ev) { 
+	if (getConfig().getBoolean("SpawnTP")) {
 		Player p = ev.getPlayer();
 		spawn(p);
 	}
+}
 	
 	public void spawn(Player p) {
 		if (sWorld == null)

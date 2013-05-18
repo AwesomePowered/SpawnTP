@@ -1,3 +1,5 @@
+#Main Feature
+SpawnTP: true
 #Should we enable join/quit messages?
 EnableJoinQuitMessages: true
 #Should we spawn a firework every time a player joins?
