@@ -137,6 +137,20 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		}
 	}
 	
+	public void onCustomLogin(PlayerJoinEvent ev) {
+		Player p = ev.getPlayer();
+		if (p.hasPermission("spawntp.joinmessage")) {
+			ev.setJoinMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("CustomJoinMessage").replace("%player%", p.getName())));
+		}
+	}
+	
+	public void onCustomQuit(PlayerQuitEvent ev){
+		Player p = ev.getPlayer();
+		if (p.hasPermission("spawntp.quitmessage")) {
+			ev.setQuitMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("CustomQuitMessage").replace("$player%", p.getName())));
+		}
+	}
+	
 	//Sound on join
 	@EventHandler
 	public void onPJ(PlayerJoinEvent ev) {
