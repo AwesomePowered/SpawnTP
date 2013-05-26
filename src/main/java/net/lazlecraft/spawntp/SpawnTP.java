@@ -137,6 +137,14 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		}
 	}
 	
+	@EventHandler
+	public void onpLogin(PlayerJoinEvent ev) {
+		Player p = ev.getPlayer();
+		if (!p.hasPermission("spawntp.noclearchat")) {
+			p.sendMessage("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+		}
+	}
+	
 	public void onCustomLogin(PlayerJoinEvent ev) {
 		Player p = ev.getPlayer();
 		if (p.hasPermission("spawntp.joinmessage")) {
