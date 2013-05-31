@@ -84,7 +84,6 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	confreload();
         }
         
-
         else if (commandLabel.equalsIgnoreCase("spawn") && (sender.hasPermission("spawntp.spawn"))) {
         	if(args.length == 0) {
             	spawn(p);
@@ -109,6 +108,14 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	p.sendMessage(prefix + ChatColor.GREEN + "X: " + ChatColor.GOLD + sX);
         	p.sendMessage(prefix + ChatColor.GREEN + "Y: " + ChatColor.GOLD + sY);
         	p.sendMessage(prefix + ChatColor.GREEN + "Z: " + ChatColor.GOLD + sZ);
+        }
+        else if (commandLabel.equalsIgnoreCase("setworldspawn") && (sender.hasPermission("spawntp.setworldspawn"))) {
+        	Location l = p.getLocation();
+        	int x = l.getBlockX();
+        	int y = l.getBlockY();
+        	int z = l.getBlockZ();
+        	p.getWorld().setSpawnLocation(x, y, z);
+        	p.sendMessage(prefix + "World spawn has been set!");
         }
         return true;
 	}
