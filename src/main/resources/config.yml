@@ -5,6 +5,10 @@ EnableJoinQuitMessages: true
 #Custom Messages
 CustomJoinMessage: '&6&lThe almighty &f&l%player% &6&ljoined the game!'
 CustomQuitMessage: '&6&lThe almighty &f&l%player% &6&lleft the game!'
+#Should we log every teleport by this plugin?
+LogTeleport: true
+#Should we clear chat on login?
+ClearChatOnLogin: false
 #Should we spawn a firework every time a player joins?
 FireworkOnJoin: true
 #Should we play sound to the player who joined? 

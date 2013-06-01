@@ -147,8 +147,10 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onpLogin(PlayerJoinEvent ev) {
 		Player p = ev.getPlayer();
+		if (getConfig().getBoolean("ClearChatOnLogin")) {
 		if (!p.hasPermission("spawntp.noclearchat")) {
 			p.sendMessage("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+			}
 		}
 	}
 	
@@ -211,6 +213,9 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		else {
     	Location SpawnLoc = new Location(Bukkit.getServer().getWorld(sWorld), sX, sY, sZ, sYaw, sPitch);
     	p.teleport(SpawnLoc);
+    	if (getConfig().getBoolean("LogTeleport")) {
+    		Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.GOLD + "Sent " + p.getName() + " to spawn");
+    	}
     }
   }
 }
