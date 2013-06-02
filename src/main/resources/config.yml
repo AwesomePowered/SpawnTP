@@ -10,9 +10,11 @@ LogTeleport: true
 #Should we clear chat on login?
 ClearChatOnLogin: false
 #Should we spawn a firework every time a player joins?
+#List of types can be found at http://lazle.us/FireworkType
 FireworkOnJoin: true
+FireworkType: BALL_LARGE
 #Should we play sound to the player who joined? 
-#List of sounds can be found here http://lazle.us/SpawnTPSounds
+#List of sounds can be found at http://lazle.us/SpawnTPSounds
 SoundOnJoin: false
 LoginSound: GHAST_MOAN
 SoundVolume: 1

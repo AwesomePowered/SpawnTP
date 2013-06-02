@@ -30,6 +30,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public double sX;
 	public double sY;
 	public double sZ;
+	public String FW;
 	public String sWorld;
 	public String prefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "] ";
 	
@@ -57,6 +58,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sY = getConfig().getDouble("SpawnY");
 		sZ = getConfig().getDouble("SpawnZ");
 		sWorld = getConfig().getString("SpawnWorld");
+		FW = getConfig().getString("FireworkType");
 		this.saveConfig();
 		this.reloadConfig();
 	}
@@ -83,7 +85,6 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	p.sendMessage(prefix + ChatColor.GREEN + "Spawn set!");
         	confreload();
         }
-        
         else if (commandLabel.equalsIgnoreCase("spawn") && (sender.hasPermission("spawntp.spawn"))) {
         	if(args.length == 0) {
             	spawn(p);
@@ -94,8 +95,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
             		}
             	else sender.sendMessage(prefix + ChatColor.RED + "Player does not exist!");
         	}
-     }
-        
+     } 
         else if (commandLabel.equalsIgnoreCase("spawntp")) {
         	p.sendMessage(prefix + ChatColor.GOLD + "This plugin is made by the almighty LaxWasHere");
         	p.sendMessage(prefix + ChatColor.GOLD + "Running version " + ChatColor.RED + this.getDescription().getVersion());
@@ -115,7 +115,11 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	int y = l.getBlockY();
         	int z = l.getBlockZ();
         	p.getWorld().setSpawnLocation(x, y, z);
-        	p.sendMessage(prefix + "World spawn has been set!");
+        	p.sendMessage(prefix + " World spawn has been set!");
+        }
+        else if (commandLabel.equalsIgnoreCase("worldspawn") && (sender.hasPermission("spawntp.worldspawn"))) {
+        	p.teleport(p.getWorld().getSpawnLocation().add(.5, .5, .5));
+        	p.sendMessage(prefix + ChatColor.GREEN + " You teleported to the worlds spawn.");
         }
         return true;
 	}
@@ -190,7 +194,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	                Location loc = p.getLocation();
 	                Firework firework = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
 	                FireworkMeta ftw = (FireworkMeta) firework.getFireworkMeta();
-	                ftw.addEffects(FireworkEffect.builder().withFlicker().withTrail().withFade(Color.ORANGE).withColor(Color.GREEN).with(Type.STAR).with(Type.BURST).with(Type.BALL_LARGE).build());
+	                ftw.addEffects(FireworkEffect.builder().withFlicker().withTrail().withFade(Color.ORANGE).withColor(Color.GREEN).with(Type.STAR).with(Type.valueOf(FW)).with(Type.BALL_LARGE).build());
 	                ftw.setPower(2);
 	                firework.setFireworkMeta(ftw);
 	            }
