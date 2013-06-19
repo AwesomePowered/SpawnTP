@@ -30,6 +30,9 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public double sX;
 	public double sY;
 	public double sZ;
+	public boolean jqM;
+	public boolean eFW;
+	public boolean sTP;
 	public String FW;
 	public String sWorld;
 	public String prefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "] ";
@@ -59,6 +62,9 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sZ = getConfig().getDouble("SpawnZ");
 		sWorld = getConfig().getString("SpawnWorld");
 		FW = getConfig().getString("FireworkType");
+		jqM = getConfig().getBoolean("EnableJoinQuitMessages");
+		eFW = getConfig().getBoolean("FireworkOnJoin");
+		sTP = getConfig().getBoolean("SpawnTP");
 		this.saveConfig();
 		this.reloadConfig();
 	}
@@ -87,11 +93,11 @@ public class SpawnTP extends JavaPlugin implements Listener {
         }
         else if (commandLabel.equalsIgnoreCase("spawn") && (sender.hasPermission("spawntp.spawn"))) {
         	if(args.length == 0) {
-            	spawn(p);
+            	sendSpawn(p);
         	} else if (args.length == 1 && sender.hasPermission("spawntp.spawn.others")) {
             		if (sender.getServer().getPlayer(args[0]) != null) {
             			Player pp = sender.getServer().getPlayer(args[0]);
-            			spawn(pp);
+            			sendSpawn(pp);
             		}
             	else sender.sendMessage(prefix + ChatColor.RED + "Player does not exist!");
         	}
@@ -127,7 +133,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	//Null Join Message.
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent ev) {
-		if (!getConfig().getBoolean("EnableJoinQuitMessages")) {
+		if (!jqM) {
 		ev.setJoinMessage("");
 		}
 	}
@@ -135,7 +141,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	//Null Quit Message
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent ev) {
-		if (!getConfig().getBoolean("EnableJoinQuitMessages")) {
+		if (!jqM) {
 		ev.setQuitMessage("");
 		}
 	}
@@ -143,7 +149,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	//Null Kick Message
 	@EventHandler
 	public void onPKick(PlayerKickEvent ev) {
-		if (!getConfig().getBoolean("EnableJoinQuitMessages")) {
+		if (!jqM) {
 			ev.setLeaveMessage("");
 		}
 	}
@@ -188,7 +194,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onJoinPlayer(PlayerJoinEvent ev) {
 	    final Player p = ev.getPlayer();
-	    if(getConfig().getBoolean("FireworkOnJoin")) {
+	    if(eFW) {
 	        new BukkitRunnable() {
 	            public void run() {
 	                Location loc = p.getLocation();
@@ -205,13 +211,15 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	//SpawnTP
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) { 
-	if (getConfig().getBoolean("SpawnTP")) {
+	if (sTP) {
 		Player p = ev.getPlayer();
-		spawn(p);
+		if (!p.hasPermission("spawntp.bypass")) {
+		sendSpawn(p);
+		}
 	}
 }
 	
-	public void spawn(Player p) {
+	public void sendSpawn(Player p) {
 		if (sWorld == null)
 			p.teleport(p.getWorld().getSpawnLocation().add(0.5,0.5,0.5));
 		else {
