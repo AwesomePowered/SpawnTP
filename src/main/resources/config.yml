@@ -1,5 +1,7 @@
 #Main Feature
 SpawnTP: true
+#Should we clear the players inventory on join?
+ClearInventory: false
 #Should we enable join/quit messages?
 EnableJoinQuitMessages: true
 #Custom Messages

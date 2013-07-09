@@ -33,6 +33,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public boolean jqM;
 	public boolean eFW;
 	public boolean sTP;
+	public boolean cInv;
 	public String FW;
 	public String sWorld;
 	public String prefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "] ";
@@ -65,6 +66,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		jqM = getConfig().getBoolean("EnableJoinQuitMessages");
 		eFW = getConfig().getBoolean("FireworkOnJoin");
 		sTP = getConfig().getBoolean("SpawnTP");
+		cInv = getConfig().getBoolean("ClearInventory");
 		this.saveConfig();
 		this.reloadConfig();
 	}
@@ -206,6 +208,16 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	            }
 	        }.runTaskLater(this, 20L);
 	    }
+	}
+	
+	//Clear inv
+	@EventHandler
+	public void onpJoin(PlayerJoinEvent ev)	{
+		if (cInv) {
+			if (!ev.getPlayer().hasPermission("spawntp.noinvclear")) {
+				ev.getPlayer().getInventory().clear();
+			}
+		}
 	}
 	
 	//SpawnTP
