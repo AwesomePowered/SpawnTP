@@ -19,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -40,14 +41,10 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	
 	
 	public void onEnable(){
-		//Config
 		getConfig().options().copyDefaults(true);
 		this.saveConfig();
-		//Get config values.
-		confreload();
-		//Register events
+		confReload();
 		getServer().getPluginManager().registerEvents(this, this); 
-		//Metrics
 		try {
                     Metrics metrics = new Metrics(this);
                     metrics.start();
@@ -55,7 +52,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
                 catch (IOException e) {}
 	} 
 	
-	public void confreload() {
+	public void confReload() {
 		sYaw = getConfig().getInt("SpawnYaw");
 		sPitch = getConfig().getInt("SpawnPitch");
 		sX = getConfig().getDouble("SpawnX");
@@ -91,7 +88,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	getConfig().set("SpawnWorld", String.valueOf(l.getWorld().getName()));
         	p.getWorld().setSpawnLocation(x, y, z);
         	p.sendMessage(prefix + ChatColor.GREEN + "Spawn set!");
-        	confreload();
+        	confReload();
         }
         else if (commandLabel.equalsIgnoreCase("spawn") && (sender.hasPermission("spawntp.spawn"))) {
         	if(args.length == 0) {
@@ -108,7 +105,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	p.sendMessage(prefix + ChatColor.GOLD + "This plugin is made by the almighty LaxWasHere");
         	p.sendMessage(prefix + ChatColor.GOLD + "Running version " + ChatColor.RED + this.getDescription().getVersion());
         	if (sender.hasPermission("spawntp.reload")) {
-        	confreload();
+        	confReload();
         	}
         }
         else if (commandLabel.equalsIgnoreCase("spawnloc") && (sender.hasPermission("spawntp.location"))) {
@@ -132,40 +129,32 @@ public class SpawnTP extends JavaPlugin implements Listener {
         return true;
 	}
 	
+	@EventHandler
 	public void onCustomLogin(PlayerJoinEvent ev) {
 		Player p = ev.getPlayer();
 		if (p.hasPermission("spawntp.joinmessage")) {
 			ev.setJoinMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("CustomJoinMessage").replace("%player%", p.getName())));
+		} else if (!jqM) {
+			ev.setJoinMessage("");
 		}
 	}
 	
+	@EventHandler
 	public void onCustomQuit(PlayerQuitEvent ev){
 		Player p = ev.getPlayer();
 		if (p.hasPermission("spawntp.quitmessage")) {
 			ev.setQuitMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("CustomQuitMessage").replace("$player%", p.getName())));
+		} else if (!jqM) {
+			ev.setQuitMessage("");
 		}
 	}
 	
-	//Null Join Message.
-	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent ev) {
-		if (!jqM) {
-		ev.setJoinMessage("");
-		}
-	}
-	
-	//Null Quit Message
-	@EventHandler
-	public void onPlayerQuit(PlayerQuitEvent ev) {
-		if (!jqM) {
-		ev.setQuitMessage("");
-		}
-	}
-	
-	//Null Kick Message
 	@EventHandler
 	public void onPKick(PlayerKickEvent ev) {
-		if (!jqM) {
+		Player p = ev.getPlayer();
+		if (p.hasPermission("spawntp.quitmessage")) {
+			ev.setLeaveMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("CustomQuitMessage").replace("$player%", p.getName())));
+		} else if (!jqM) {
 			ev.setLeaveMessage("");
 		}
 	}
@@ -180,7 +169,6 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		}
 	}
 	
-	//Sound on join
 	@EventHandler
 	public void onPJ(PlayerJoinEvent ev) {
 		//Play sound
@@ -210,12 +198,12 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	    }
 	}
 	
-	//Clear inv
 	@EventHandler
 	public void onpJoin(PlayerJoinEvent ev)	{
+		Player p = ev.getPlayer();
 		if (cInv) {
 			if (!ev.getPlayer().hasPermission("spawntp.noinvclear")) {
-				ev.getPlayer().getInventory().clear();
+				clearInv(p);
 			}
 		}
 	}
@@ -230,6 +218,13 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		}
 	}
 }
+	
+	@SuppressWarnings("deprecation")
+	public void clearInv(Player p) {
+		p.getInventory().clear();
+		p.getInventory().setArmorContents(new ItemStack[4]);
+		p.updateInventory();
+	}
 	
 	public void sendSpawn(Player p) {
 		if (sWorld == null)
