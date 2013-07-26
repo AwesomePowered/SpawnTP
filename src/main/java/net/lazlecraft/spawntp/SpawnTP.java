@@ -35,6 +35,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public boolean eFW;
 	public boolean sTP;
 	public boolean cInv;
+	public boolean oNJ;
 	public String FW;
 	public String sWorld;
 	public String prefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "] ";
@@ -64,6 +65,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		eFW = getConfig().getBoolean("FireworkOnJoin");
 		sTP = getConfig().getBoolean("SpawnTP");
 		cInv = getConfig().getBoolean("ClearInventory");
+		oNJ = getConfig().getBoolean("SpawnOnlyNewJoin");
 		this.saveConfig();
 		this.reloadConfig();
 	}
@@ -185,6 +187,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public void onJoinPlayer(PlayerJoinEvent ev) {
 	    final Player p = ev.getPlayer();
 	    if(eFW) {
+	    	if (p.hasPermission("spawntp.firework")) {
 	        new BukkitRunnable() {
 	            public void run() {
 	                Location loc = p.getLocation();
@@ -197,6 +200,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	        }.runTaskLater(this, 20L);
 	    }
 	}
+}
 	
 	@EventHandler
 	public void onpJoin(PlayerJoinEvent ev)	{
@@ -211,13 +215,24 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	//SpawnTP
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) { 
-	if (sTP) {
+	if (sTP && !oNJ) {
 		Player p = ev.getPlayer();
 		if (!p.hasPermission("spawntp.bypass")) {
 		sendSpawn(p);
 		}
 	}
 }
+	
+	@EventHandler
+	public void onNewJoin(PlayerJoinEvent ev) {
+		if (oNJ) {
+			Player p = ev.getPlayer();
+			if (!p.hasPlayedBefore()) {
+				sendSpawn(p);
+			}
+		}
+	}
+	
 	
 	@SuppressWarnings("deprecation")
 	public void clearInv(Player p) {
