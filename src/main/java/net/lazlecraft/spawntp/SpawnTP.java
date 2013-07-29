@@ -36,8 +36,12 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public boolean sTP;
 	public boolean cInv;
 	public boolean oNJ;
+	public boolean cCht;
 	public String FW;
 	public String sWorld;
+	public String cJN;
+	public String cQT;
+	public String clearChat = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";//lol
 	public String prefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "] ";
 	
 	
@@ -61,12 +65,14 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sZ = getConfig().getDouble("SpawnZ");
 		sWorld = getConfig().getString("SpawnWorld");
 		FW = getConfig().getString("FireworkType");
+		cJN = getConfig().getString("CustomJoinMessage");
+		cQT = getConfig().getString("CustomQuitMessage");
 		jqM = getConfig().getBoolean("EnableJoinQuitMessages");
 		eFW = getConfig().getBoolean("FireworkOnJoin");
 		sTP = getConfig().getBoolean("SpawnTP");
 		cInv = getConfig().getBoolean("ClearInventory");
+		cCht = getConfig().getBoolean("ClearChatOnLogin");
 		oNJ = getConfig().getBoolean("SpawnOnlyNewJoin");
-		this.saveConfig();
 		this.reloadConfig();
 	}
 
@@ -135,7 +141,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public void onCustomLogin(PlayerJoinEvent ev) {
 		Player p = ev.getPlayer();
 		if (p.hasPermission("spawntp.joinmessage")) {
-			ev.setJoinMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("CustomJoinMessage").replace("%player%", p.getName())));
+			ev.setJoinMessage(ChatColor.translateAlternateColorCodes('&', cJN.replace("%player%", p.getName())));
 		} else if (!jqM) {
 			ev.setJoinMessage("");
 		}
@@ -145,7 +151,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public void onCustomQuit(PlayerQuitEvent ev){
 		Player p = ev.getPlayer();
 		if (p.hasPermission("spawntp.quitmessage")) {
-			ev.setQuitMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("CustomQuitMessage").replace("%player%", p.getName())));
+			ev.setQuitMessage(ChatColor.translateAlternateColorCodes('&', cQT.replace("%player%", p.getName())));
 		} else if (!jqM) {
 			ev.setQuitMessage("");
 		}
@@ -155,19 +161,9 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public void onPKick(PlayerKickEvent ev) {
 		Player p = ev.getPlayer();
 		if (p.hasPermission("spawntp.quitmessage")) {
-			ev.setLeaveMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString("CustomQuitMessage").replace("%player%", p.getName())));
+			ev.setLeaveMessage(ChatColor.translateAlternateColorCodes('&', cQT.replace("%player%", p.getName())));
 		} else if (!jqM) {
 			ev.setLeaveMessage("");
-		}
-	}
-	
-	@EventHandler
-	public void onpLogin(PlayerJoinEvent ev) {
-		Player p = ev.getPlayer();
-		if (getConfig().getBoolean("ClearChatOnLogin")) {
-		if (!p.hasPermission("spawntp.noclearchat")) {
-			p.sendMessage("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-			}
 		}
 	}
 	
@@ -208,6 +204,11 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		if (cInv) {
 			if (!ev.getPlayer().hasPermission("spawntp.noinvclear")) {
 				clearInv(p);
+			}
+		}
+		if (cCht) {
+			if (!p.hasPermission("spawntp.noclearchat")) {
+				p.sendMessage(clearChat);
 			}
 		}
 	}
