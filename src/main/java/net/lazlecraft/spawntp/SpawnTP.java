@@ -37,6 +37,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public boolean cInv;
 	public boolean oNJ;
 	public boolean cCht;
+	public boolean aFJ;
 	public String FW;
 	public String sWorld;
 	public String cJN;
@@ -73,6 +74,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		cInv = getConfig().getBoolean("ClearInventory");
 		cCht = getConfig().getBoolean("ClearChatOnLogin");
 		oNJ = getConfig().getBoolean("SpawnOnlyNewJoin");
+		aFJ = getConfig().getBoolean("AnnounceFirstJoin");
 		this.reloadConfig();
 	}
 
@@ -230,6 +232,9 @@ public class SpawnTP extends JavaPlugin implements Listener {
 			Player p = ev.getPlayer();
 			if (!p.hasPlayedBefore()) {
 				sendSpawn(p);
+				if (aFJ) {
+					Bukkit.broadcastMessage(ChatColor.GOLD + p.getName() + ChatColor.GREEN + " joined for the first time!");
+				}
 			}
 		}
 	}

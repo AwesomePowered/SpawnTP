@@ -4,6 +4,8 @@ SpawnTP: true
 SpawnOnlyNewJoin: false
 #Should we clear the players inventory on join?
 ClearInventory: false
+#Should we anounce first join?
+AnnounceFirstJoin: true
 #Should we enable join/quit messages?
 EnableJoinQuitMessages: true
 #Custom Messages
