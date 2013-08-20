@@ -25,6 +25,10 @@ SoundOnJoin: false
 LoginSound: GHAST_MOAN
 SoundVolume: 1
 SoundPitch: 1
+#Disabled worlds, players don't get sent to spawn if they logged in on these worlds.
+DisabledInWorld:
+- Hardcoreworld
+- Nospawnworld
 #Spawn Location
 SpawnYaw:
 SpawnPitch:

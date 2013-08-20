@@ -221,7 +221,9 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	if (sTP && !oNJ) {
 		Player p = ev.getPlayer();
 		if (!p.hasPermission("spawntp.bypass")) {
+			if (!getConfig().getStringList("DisabledInWorld").contains(p.getLocation().getWorld().getName())) {
 		sendSpawn(p);
+			}
 		}
 	}
 }
