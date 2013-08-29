@@ -75,6 +75,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		cCht = getConfig().getBoolean("ClearChatOnLogin");
 		oNJ = getConfig().getBoolean("SpawnOnlyNewJoin");
 		aFJ = getConfig().getBoolean("AnnounceFirstJoin");
+		this.saveConfig();
 		this.reloadConfig();
 	}
 
