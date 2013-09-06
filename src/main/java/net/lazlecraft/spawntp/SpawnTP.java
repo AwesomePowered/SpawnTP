@@ -59,12 +59,12 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	} 
 	
 	public void confReload() {
-		sYaw = getConfig().getInt("SpawnYaw");
-		sPitch = getConfig().getInt("SpawnPitch");
-		sX = getConfig().getDouble("SpawnX");
-		sY = getConfig().getDouble("SpawnY");
-		sZ = getConfig().getDouble("SpawnZ");
-		sWorld = getConfig().getString("SpawnWorld");
+		sYaw = getConfig().getInt("Spawn.Yaw");
+		sPitch = getConfig().getInt("Spawn.Pitch");
+		sX = getConfig().getDouble("Spawn.X");
+		sY = getConfig().getDouble("Spawn.Y");
+		sZ = getConfig().getDouble("Spawn.Z");
+		sWorld = getConfig().getString("Spawn.World");
 		FW = getConfig().getString("FireworkType");
 		cJN = getConfig().getString("CustomJoinMessage");
 		cQT = getConfig().getString("CustomQuitMessage");
