@@ -143,7 +143,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onCustomLogin(PlayerJoinEvent ev) {
 		Player p = ev.getPlayer();
-		if (p.hasPermission("spawntp.joinmessage")) {
+		if (p.hasPermission("spawntp.joinmessage") && jqM) {
 			ev.setJoinMessage(ChatColor.translateAlternateColorCodes('&', cJN.replace("%player%", p.getName())));
 		} else if (!jqM) {
 			ev.setJoinMessage("");
@@ -153,7 +153,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onCustomQuit(PlayerQuitEvent ev){
 		Player p = ev.getPlayer();
-		if (p.hasPermission("spawntp.quitmessage")) {
+		if (p.hasPermission("spawntp.quitmessage") && jqM) {
 			ev.setQuitMessage(ChatColor.translateAlternateColorCodes('&', cQT.replace("%player%", p.getName())));
 		} else if (!jqM) {
 			ev.setQuitMessage("");
@@ -163,7 +163,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onPKick(PlayerKickEvent ev) {
 		Player p = ev.getPlayer();
-		if (p.hasPermission("spawntp.quitmessage")) {
+		if (p.hasPermission("spawntp.quitmessage") && jqM) {
 			ev.setLeaveMessage(ChatColor.translateAlternateColorCodes('&', cQT.replace("%player%", p.getName())));
 		} else if (!jqM) {
 			ev.setLeaveMessage("");
