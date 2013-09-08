@@ -145,7 +145,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		Player p = ev.getPlayer();
 		if (p.hasPermission("spawntp.joinmessage") && jqM) {
 			ev.setJoinMessage(ChatColor.translateAlternateColorCodes('&', cJN.replace("%player%", p.getName())));
-		} else if (!jqM) {
+		} else {
 			ev.setJoinMessage("");
 		}
 	}
@@ -155,7 +155,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		Player p = ev.getPlayer();
 		if (p.hasPermission("spawntp.quitmessage") && jqM) {
 			ev.setQuitMessage(ChatColor.translateAlternateColorCodes('&', cQT.replace("%player%", p.getName())));
-		} else if (!jqM) {
+		} else {
 			ev.setQuitMessage("");
 		}
 	}
@@ -165,7 +165,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		Player p = ev.getPlayer();
 		if (p.hasPermission("spawntp.quitmessage") && jqM) {
 			ev.setLeaveMessage(ChatColor.translateAlternateColorCodes('&', cQT.replace("%player%", p.getName())));
-		} else if (!jqM) {
+		} else {
 			ev.setLeaveMessage("");
 		}
 	}
