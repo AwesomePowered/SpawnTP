@@ -91,12 +91,12 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	int x = l.getBlockX();
         	int y = l.getBlockY();
         	int z = l.getBlockZ();
-        	getConfig().set("SpawnX", Double.valueOf(l.getBlockX() + 0.5));
-        	getConfig().set("SpawnY", Double.valueOf(l.getBlockY() + 0.5));
-        	getConfig().set("SpawnZ", Double.valueOf(l.getBlockZ() + 0.5));
-        	getConfig().set("SpawnYaw", Float.valueOf(l.getYaw()));
-        	getConfig().set("SpawnPitch", Float.valueOf(l.getPitch()));
-        	getConfig().set("SpawnWorld", String.valueOf(l.getWorld().getName()));
+        	getConfig().set("Spawn.X", Double.valueOf(l.getBlockX() + 0.5));
+        	getConfig().set("Spawn.Y", Double.valueOf(l.getBlockY() + 0.5));
+        	getConfig().set("Spawn.Z", Double.valueOf(l.getBlockZ() + 0.5));
+        	getConfig().set("Spawn.Yaw", Float.valueOf(l.getYaw()));
+        	getConfig().set("Spawn.Pitch", Float.valueOf(l.getPitch()));
+        	getConfig().set("Spawn.World", String.valueOf(l.getWorld().getName()));
         	p.getWorld().setSpawnLocation(x, y, z);
         	p.sendMessage(prefix + ChatColor.GREEN + "Spawn set!");
         	confReload();
