@@ -31,6 +31,11 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public double sX;
 	public double sY;
 	public double sZ;
+	public float FsYaw;
+	public float FsPitch;
+	public double FsX;
+	public double FsY;
+	public double FsZ;
 	public boolean jqM;
 	public boolean eFW;
 	public boolean sTP;
@@ -38,8 +43,11 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public boolean oNJ;
 	public boolean cCht;
 	public boolean aFJ;
-	public String FW;
+	public String Ft1;
+	public String Ft2;
+	public String Ft3;
 	public String sWorld;
+	public String FsWorld;
 	public String cJN;
 	public String cQT;
 	public String clearChat = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";//lol
@@ -65,14 +73,22 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sY = getConfig().getDouble("Spawn.Y");
 		sZ = getConfig().getDouble("Spawn.Z");
 		sWorld = getConfig().getString("Spawn.World");
-		FW = getConfig().getString("FireworkType");
-		cJN = getConfig().getString("CustomJoinMessage");
-		cQT = getConfig().getString("CustomQuitMessage");
-		jqM = getConfig().getBoolean("EnableJoinQuitMessages");
-		eFW = getConfig().getBoolean("FireworkOnJoin");
+		FsYaw = getConfig().getInt("Spawn.Yaw");
+		FsPitch = getConfig().getInt("Spawn.Pitch");
+		FsX = getConfig().getDouble("Spawn.X");
+		FsY = getConfig().getDouble("Spawn.Y");
+		FsZ = getConfig().getDouble("Spawn.Z");
+		FsWorld = getConfig().getString("Spawn.World");
+		Ft1 = getConfig().getString("Firework.Type1");
+		Ft2 = getConfig().getString("Firework.Type2");
+		Ft3 = getConfig().getString("Firework.Type3");
+		cJN = getConfig().getString("LoginMessages.Join");
+		cQT = getConfig().getString("LoginMessages.Quit");
+		jqM = getConfig().getBoolean("LoginMessages.Enabled");
+		eFW = getConfig().getBoolean("Firework.Enabled");
 		sTP = getConfig().getBoolean("SpawnTP");
-		cInv = getConfig().getBoolean("ClearInventory");
-		cCht = getConfig().getBoolean("ClearChatOnLogin");
+		cInv = getConfig().getBoolean("Clear.Inventory");
+		cCht = getConfig().getBoolean("Clear.Chat");
 		oNJ = getConfig().getBoolean("SpawnOnlyNewJoin");
 		aFJ = getConfig().getBoolean("AnnounceFirstJoin");
 		this.saveConfig();
@@ -87,6 +103,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
              
     	Player p = (Player)sender;
         if (((commandLabel.equalsIgnoreCase("setspawn")) || commandLabel.equalsIgnoreCase("sss")) && (sender.hasPermission("spawntp.setspawn"))) {
+        	if (args.length == 0) {
         	Location l = p.getLocation();
         	int x = l.getBlockX();
         	int y = l.getBlockY();
@@ -100,6 +117,30 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	p.getWorld().setSpawnLocation(x, y, z);
         	p.sendMessage(prefix + ChatColor.GREEN + "Spawn set!");
         	confReload();
+        	} else if (args.length == 1) {
+        		if (args[0].equalsIgnoreCase("world")) {
+                	Location l = p.getLocation();
+                	int x = l.getBlockX();
+                	int y = l.getBlockY();
+                	int z = l.getBlockZ();
+                	p.getWorld().setSpawnLocation(x, y, z);
+                	p.sendMessage(prefix + " World spawn has been set!");
+        		} if (args[0].equalsIgnoreCase("firtsjoin")) {
+                	Location l = p.getLocation();
+                	int x = l.getBlockX();
+                	int y = l.getBlockY();
+                	int z = l.getBlockZ();
+                	getConfig().set("FirstSpawn.X", Double.valueOf(l.getBlockX() + 0.5));
+                	getConfig().set("FirstSpawn.Y", Double.valueOf(l.getBlockY() + 0.5));
+                	getConfig().set("FirstSpawn.Z", Double.valueOf(l.getBlockZ() + 0.5));
+                	getConfig().set("FirstSpawn.Yaw", Float.valueOf(l.getYaw()));
+                	getConfig().set("FirstSpawn.Pitch", Float.valueOf(l.getPitch()));
+                	getConfig().set("FirstSpawn.World", String.valueOf(l.getWorld().getName()));
+                	p.getWorld().setSpawnLocation(x, y, z);
+                	p.sendMessage(prefix + ChatColor.GREEN + "First join spawn set!");
+                	confReload();
+        		}
+        	}
         }
         else if (commandLabel.equalsIgnoreCase("spawn") && (sender.hasPermission("spawntp.spawn"))) {
         	if(args.length == 0) {
@@ -124,14 +165,6 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	p.sendMessage(prefix + ChatColor.GREEN + "X: " + ChatColor.GOLD + sX);
         	p.sendMessage(prefix + ChatColor.GREEN + "Y: " + ChatColor.GOLD + sY);
         	p.sendMessage(prefix + ChatColor.GREEN + "Z: " + ChatColor.GOLD + sZ);
-        }
-        else if (commandLabel.equalsIgnoreCase("setworldspawn") && (sender.hasPermission("spawntp.setworldspawn"))) {
-        	Location l = p.getLocation();
-        	int x = l.getBlockX();
-        	int y = l.getBlockY();
-        	int z = l.getBlockZ();
-        	p.getWorld().setSpawnLocation(x, y, z);
-        	p.sendMessage(prefix + " World spawn has been set!");
         }
         else if (commandLabel.equalsIgnoreCase("worldspawn") && (sender.hasPermission("spawntp.worldspawn"))) {
         	p.teleport(p.getWorld().getSpawnLocation().add(.5, .5, .5));
@@ -174,9 +207,9 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public void onPJ(PlayerJoinEvent ev) {
 		//Play sound
 		Player p = ev.getPlayer(); 
-		if (getConfig().getBoolean("SoundOnJoin")) {
+		if (getConfig().getBoolean("Sound.Enabled")) {
 			Location loc = p.getLocation();
-			p.playSound(loc, Sound.valueOf(getConfig().getString("LoginSound")), getConfig().getInt("SoundVolume"), getConfig().getInt("SoundPitch"));
+			p.playSound(loc, Sound.valueOf(getConfig().getString("Sound.Sound")), getConfig().getInt("Sound.Volume"), getConfig().getInt("Sound.Pitch"));
 		}
 	}
 	
@@ -192,7 +225,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	                Location loc = p.getLocation();
 	                Firework firework = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
 	                FireworkMeta ftw = (FireworkMeta) firework.getFireworkMeta();
-	                ftw.addEffects(FireworkEffect.builder().withFlicker().withTrail().withFade(Color.ORANGE).withColor(Color.GREEN).with(Type.STAR).with(Type.valueOf(FW)).with(Type.BALL_LARGE).build());
+	                ftw.addEffects(FireworkEffect.builder().withFlicker().withTrail().withFade(Color.ORANGE).withColor(Color.GREEN).with(Type.valueOf(Ft1)).with(Type.valueOf(Ft2)).with(Type.valueOf(Ft3)).build());
 	                ftw.setPower(2);
 	                firework.setFireworkMeta(ftw);
 	            }

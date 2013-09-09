@@ -2,29 +2,36 @@
 SpawnTP: true
 #Should we only spawn new players?
 SpawnOnlyNewJoin: false
-#Should we clear the players inventory on join?
+#Should we clear the players inventory/chat on join?
 ClearInventory: false
+Clear:
+    Chat: false
+    Inventory: false
 #Should we anounce first join?
 AnnounceFirstJoin: true
-#Should we enable join/quit messages?
-EnableJoinQuitMessages: true
 #Custom Messages
-CustomJoinMessage: '&6&lThe almighty &f&l%player% &6&ljoined the game!'
-CustomQuitMessage: '&6&lThe almighty &f&l%player% &6&lleft the game!'
+LoginMessages:
+    Enabled: false
+    Join: '&6&lThe almighty &f&l%player% &6&ljoined the game!'
+    Quit: '&6&lThe almighty &f&l%player% &6&lleft the game!'
 #Should we log every teleport by this plugin?
 LogTeleport: true
 #Should we clear chat on login?
 ClearChatOnLogin: false
 #Should we spawn a firework every time a player joins?
 #List of types can be found at http://lazle.us/FireworkType
-FireworkOnJoin: true
-FireworkType: BALL_LARGE
+Firework:
+    Enabled: true
+    Type1: BALL_LARGE
+    Type2: STAR
+    Type3: BURST
 #Should we play sound to the player who joined? 
 #List of sounds can be found at http://lazle.us/SpawnTPSounds
-SoundOnJoin: false
-LoginSound: GHAST_MOAN
-SoundVolume: 1
-SoundPitch: 1
+Sound:
+    Enabled: false
+    Sound: GHAST_MOAN
+    Volume: 1
+    Pitch: 1
 #Disabled worlds, players don't get sent to spawn if they logged in on these worlds.
 DisabledInWorld:
 - Hardcoreworld
@@ -37,4 +44,12 @@ Spawn:
    X:
    Y:
    Z:
-ConfigVersion: 1
+#Spawn Location //Not implemented yet.
+FirstSpawn:
+   World:
+   Yaw:
+   Pitch:
+   X:
+   Y:
+   Z:
+ConfigVersion: 2
