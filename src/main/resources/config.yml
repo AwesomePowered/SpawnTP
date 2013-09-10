@@ -1,9 +1,12 @@
 #Main Feature
 SpawnTP: true
-#Should we only spawn new players?
+#New Players
 SpawnOnlyNewJoin: false
+NewPlayers:
+    SendToSpawn: true
+    Announce: true
+    AnnounceMessage: '&f&l%player% &6&lHas joined for the first time!'
 #Should we clear the players inventory/chat on join?
-ClearInventory: false
 Clear:
     Chat: false
     Inventory: false
@@ -16,8 +19,6 @@ LoginMessages:
     Quit: '&6&lThe almighty &f&l%player% &6&lleft the game!'
 #Should we log every teleport by this plugin?
 LogTeleport: true
-#Should we clear chat on login?
-ClearChatOnLogin: false
 #Should we spawn a firework every time a player joins?
 #List of types can be found at http://lazle.us/FireworkType
 Firework:

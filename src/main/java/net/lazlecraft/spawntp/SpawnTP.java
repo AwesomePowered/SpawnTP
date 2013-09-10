@@ -43,6 +43,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public boolean oNJ;
 	public boolean cCht;
 	public boolean aFJ;
+	public String nJM;
 	public String Ft1;
 	public String Ft2;
 	public String Ft3;
@@ -73,12 +74,13 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sY = getConfig().getDouble("Spawn.Y");
 		sZ = getConfig().getDouble("Spawn.Z");
 		sWorld = getConfig().getString("Spawn.World");
-		FsYaw = getConfig().getInt("Spawn.Yaw");
-		FsPitch = getConfig().getInt("Spawn.Pitch");
-		FsX = getConfig().getDouble("Spawn.X");
-		FsY = getConfig().getDouble("Spawn.Y");
-		FsZ = getConfig().getDouble("Spawn.Z");
-		FsWorld = getConfig().getString("Spawn.World");
+		FsYaw = getConfig().getInt("FirstSpawn.Yaw");
+		FsPitch = getConfig().getInt("FirstSpawn.Pitch");
+		FsX = getConfig().getDouble("FirstSpawn.X");
+		FsY = getConfig().getDouble("FirstSpawn.Y");
+		FsZ = getConfig().getDouble("FirstSpawn.Z");
+		nJM = getConfig().getString("NewPlayers.AnnounceMessage");
+		FsWorld = getConfig().getString("FirstSpawn.World");
 		Ft1 = getConfig().getString("Firework.Type1");
 		Ft2 = getConfig().getString("Firework.Type2");
 		Ft3 = getConfig().getString("Firework.Type3");
@@ -90,7 +92,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		cInv = getConfig().getBoolean("Clear.Inventory");
 		cCht = getConfig().getBoolean("Clear.Chat");
 		oNJ = getConfig().getBoolean("SpawnOnlyNewJoin");
-		aFJ = getConfig().getBoolean("AnnounceFirstJoin");
+		aFJ = getConfig().getBoolean("NewPlayers.Announce");
 		this.saveConfig();
 		this.reloadConfig();
 	}
@@ -160,15 +162,9 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	confReload();
         	}
         }
-        else if (commandLabel.equalsIgnoreCase("spawnloc") && (sender.hasPermission("spawntp.location"))) {
-        	p.sendMessage(prefix + ChatColor.GREEN + "World: " + ChatColor.GOLD + sWorld);
-        	p.sendMessage(prefix + ChatColor.GREEN + "X: " + ChatColor.GOLD + sX);
-        	p.sendMessage(prefix + ChatColor.GREEN + "Y: " + ChatColor.GOLD + sY);
-        	p.sendMessage(prefix + ChatColor.GREEN + "Z: " + ChatColor.GOLD + sZ);
-        }
         else if (commandLabel.equalsIgnoreCase("worldspawn") && (sender.hasPermission("spawntp.worldspawn"))) {
         	p.teleport(p.getWorld().getSpawnLocation().add(.5, .5, .5));
-        	p.sendMessage(prefix + ChatColor.GREEN + " You teleported to the worlds spawn.");
+        	p.sendMessage(prefix + ChatColor.GREEN + " You teleported to the world spawn.");
         }
         return true;
 	}
@@ -259,28 +255,33 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		sendSpawn(p);
 			}
 		}
-	}
-}
-	
-	@EventHandler
-	public void onNewJoin(PlayerJoinEvent ev) {
-		if (oNJ) {
-			Player p = ev.getPlayer();
-			if (!p.hasPlayedBefore()) {
-				sendSpawn(p);
-				if (aFJ) {
-					Bukkit.broadcastMessage(ChatColor.GOLD + p.getName() + ChatColor.GREEN + " joined for the first time!");
-				}
+	} if (oNJ) {
+		if (!ev.getPlayer().hasPlayedBefore()) {
+			sendNewJoin(ev.getPlayer());
+			if (aFJ) {
+				Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', nJM));
 			}
 		}
 	}
-	
+}	
 	
 	@SuppressWarnings("deprecation")
 	public void clearInv(Player p) {
 		p.getInventory().clear();
 		p.getInventory().setArmorContents(new ItemStack[4]);
 		p.updateInventory();
+	}
+	
+	public void sendNewJoin(Player p) {
+		if (FsWorld == null) 
+			sendSpawn(p);
+		else {
+	    	Location FirstSpawnLoc = new Location(Bukkit.getServer().getWorld(FsWorld), FsX, FsY, FsZ, FsYaw, FsPitch);
+	    	p.teleport(FirstSpawnLoc);
+	    	if (getConfig().getBoolean("LogTeleport")) {
+	    		Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.GOLD + "Sent " + p.getName() + " to First Join Spawn");
+	    	}
+		}
 	}
 	
 	public void sendSpawn(Player p) {
