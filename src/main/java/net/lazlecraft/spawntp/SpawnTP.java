@@ -1,7 +1,5 @@
 package net.lazlecraft.spawntp;
 
-import java.io.IOException;
-import net.lazlecraft.spawntp.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -60,11 +58,6 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		this.saveConfig();
 		confReload();
 		getServer().getPluginManager().registerEvents(this, this); 
-		try {
-                    Metrics metrics = new Metrics(this);
-                    metrics.start();
-        }
-                catch (IOException e) {}
 	} 
 	
 	public void confReload() {
@@ -144,6 +137,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
         		}
         	}
         }
+        
         else if (commandLabel.equalsIgnoreCase("spawn") && (sender.hasPermission("spawntp.spawn"))) {
         	if(args.length == 0) {
             	sendSpawn(p);
