@@ -53,11 +53,12 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public String prefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "] ";
 	
 	
-	public void onEnable(){
+	public void onEnable() {
 		getConfig().options().copyDefaults(true);
 		this.saveConfig();
 		confReload();
-		getServer().getPluginManager().registerEvents(this, this); 
+		getServer().getPluginManager().registerEvents(this, this);
+		checkConfig();
 	} 
 	
 	public void confReload() {
@@ -95,6 +96,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
             sender.sendMessage("You may not use SpawnTP commands, console!");
             return false;
         }
+        
              
     	Player p = (Player)sender;
         if (((commandLabel.equalsIgnoreCase("setspawn")) || commandLabel.equalsIgnoreCase("sss")) && (sender.hasPermission("spawntp.setspawn"))) {
@@ -258,6 +260,13 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		}
 	}
 }	
+	
+	public void checkConfig() {
+		if (getConfig().getInt("ConfigVersion") != 2) {
+			System.out.println(prefix + " Please reset your config!");
+			Bukkit.getPluginManager().disablePlugin(this);
+		}
+	}
 	
 	@SuppressWarnings("deprecation")
 	public void clearInv(Player p) {
