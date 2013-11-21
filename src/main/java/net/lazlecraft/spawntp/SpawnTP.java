@@ -7,6 +7,7 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
@@ -50,7 +51,8 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public String cJN;
 	public String cQT;
 	public String clearChat = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";//lol
-	public String prefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "] ";
+	public String prefix;
+	public String realPrefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "] ";
 	
 	
 	public void onEnable() {
@@ -80,6 +82,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		Ft3 = getConfig().getString("Firework.Type3");
 		cJN = getConfig().getString("LoginMessages.Join");
 		cQT = getConfig().getString("LoginMessages.Quit");
+		prefix = getConfig().getString("prefix");
 		jqM = getConfig().getBoolean("LoginMessages.Enabled");
 		eFW = getConfig().getBoolean("Firework.Enabled");
 		sTP = getConfig().getBoolean("SpawnTP");
@@ -95,9 +98,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
         if (!(sender instanceof Player)) {
             sender.sendMessage("You may not use SpawnTP commands, console!");
             return false;
-        }
-        
-             
+        }   
     	Player p = (Player)sender;
         if (((commandLabel.equalsIgnoreCase("setspawn")) || commandLabel.equalsIgnoreCase("sss")) && (sender.hasPermission("spawntp.setspawn"))) {
         	if (args.length == 0) {
@@ -117,12 +118,19 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	} else if (args.length == 1) {
         		if (args[0].equalsIgnoreCase("world")) {
                 	Location l = p.getLocation();
+                	String WorldName = p.getLocation().getWorld().getName();
                 	int x = l.getBlockX();
                 	int y = l.getBlockY();
                 	int z = l.getBlockZ();
                 	p.getWorld().setSpawnLocation(x, y, z);
+                	getConfig().set("WorldSpawn." + WorldName, true);
+                	setSpawn("WorldSpawn.X" + WorldName, Double.valueOf(l.getBlockX() + 0.5).toString());
+                	setSpawn("WorldSpawn.Y" + WorldName, Double.valueOf(l.getBlockY() + 0.5).toString());
+                	setSpawn("WorldSpawn.Z" + WorldName, Double.valueOf(l.getBlockZ() + 0.5).toString());
+                	setSpawn("WorldSpawn.Pitch" + WorldName, Float.valueOf(l.getPitch()).toString());
+                	setSpawn("WorldSpawn.Yaw" + WorldName, Float.valueOf(l.getYaw()).toString());
                 	p.sendMessage(prefix + " World spawn has been set!");
-        		} if (args[0].equalsIgnoreCase("firtsjoin")) {
+        		} if (args[0].equalsIgnoreCase("firstjoin")) {
                 	Location l = p.getLocation();
                 	int x = l.getBlockX();
                 	int y = l.getBlockY();
@@ -152,15 +160,22 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	}
      } 
         else if (commandLabel.equalsIgnoreCase("spawntp")) {
-        	p.sendMessage(prefix + ChatColor.GOLD + "This plugin is made by the almighty LaxWasHere");
-        	p.sendMessage(prefix + ChatColor.GOLD + "Running version " + ChatColor.RED + this.getDescription().getVersion());
+        	p.sendMessage(realPrefix + ChatColor.GOLD + "This plugin is made by the almighty LaxWasHere");
+        	p.sendMessage(realPrefix + ChatColor.GOLD + "Running version " + ChatColor.RED + this.getDescription().getVersion());
         	if (sender.hasPermission("spawntp.reload")) {
         	confReload();
         	}
         }
         else if (commandLabel.equalsIgnoreCase("worldspawn") && (sender.hasPermission("spawntp.worldspawn"))) {
-        	p.teleport(p.getWorld().getSpawnLocation().add(.5, .5, .5));
+        	World WorldName = p.getLocation().getWorld();
+        	if (getConfig().getBoolean("WorldSpawn." + WorldName.toString())) {
+        	Location SpawnLoc = new Location(WorldName, getConfig().getDouble("WorldSpawn.X"+WorldName.getName()), getConfig().getDouble("WorldSpawn.Y"+WorldName.getName()), getConfig().getDouble("WorldSpawn.Z"+WorldName.getName()), getConfig().getInt("WorldSpawn.Yaw"+WorldName.getName()), getConfig().getInt("WorldSpawn.Pitch"+WorldName.getName()));//Fuck the line police!
+        	p.teleport(SpawnLoc);
         	p.sendMessage(prefix + ChatColor.GREEN + " You teleported to the world spawn.");
+        	} else {
+        		p.teleport(p.getWorld().getSpawnLocation().add(.5, .5, .5));
+        		p.sendMessage(prefix + ChatColor.RED + "No world spawn set, you have been sent to default world spawn");
+        	}
         }
         return true;
 	}
@@ -285,6 +300,10 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	    		Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.GOLD + "Sent " + p.getName() + " to First Join Spawn");
 	    	}
 		}
+	}
+	
+	public void setSpawn(String configLoc, String location) {
+		getConfig().set(configLoc, location);
 	}
 	
 	public void sendSpawn(Player p) {

@@ -1,3 +1,4 @@
+prefix: "&6[&4SpawnTP&6]"
 #Main Feature
 SpawnTP: true
 #New Players
@@ -53,4 +54,6 @@ FirstSpawn:
    X:
    Y:
    Z:
+#WorldSpawns
+WorldSpawns:
 ConfigVersion: 2
