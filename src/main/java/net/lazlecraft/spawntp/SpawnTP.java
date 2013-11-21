@@ -103,16 +103,12 @@ public class SpawnTP extends JavaPlugin implements Listener {
         if (((commandLabel.equalsIgnoreCase("setspawn")) || commandLabel.equalsIgnoreCase("sss")) && (sender.hasPermission("spawntp.setspawn"))) {
         	if (args.length == 0) {
         	Location l = p.getLocation();
-        	int x = l.getBlockX();
-        	int y = l.getBlockY();
-        	int z = l.getBlockZ();
         	getConfig().set("Spawn.X", Double.valueOf(l.getBlockX() + 0.5));
         	getConfig().set("Spawn.Y", Double.valueOf(l.getBlockY() + 0.5));
         	getConfig().set("Spawn.Z", Double.valueOf(l.getBlockZ() + 0.5));
         	getConfig().set("Spawn.Yaw", Float.valueOf(l.getYaw()));
         	getConfig().set("Spawn.Pitch", Float.valueOf(l.getPitch()));
         	getConfig().set("Spawn.World", String.valueOf(l.getWorld().getName()));
-        	p.getWorld().setSpawnLocation(x, y, z);
         	p.sendMessage(prefix + ChatColor.GREEN + "Spawn set!");
         	confReload();
         	} else if (args.length == 1) {
@@ -123,25 +119,22 @@ public class SpawnTP extends JavaPlugin implements Listener {
                 	int y = l.getBlockY();
                 	int z = l.getBlockZ();
                 	p.getWorld().setSpawnLocation(x, y, z);
-                	getConfig().set("WorldSpawn." + WorldName, true);
-                	setSpawn("WorldSpawn.X" + WorldName, Double.valueOf(l.getBlockX() + 0.5).toString());
-                	setSpawn("WorldSpawn.Y" + WorldName, Double.valueOf(l.getBlockY() + 0.5).toString());
-                	setSpawn("WorldSpawn.Z" + WorldName, Double.valueOf(l.getBlockZ() + 0.5).toString());
-                	setSpawn("WorldSpawn.Pitch" + WorldName, Float.valueOf(l.getPitch()).toString());
-                	setSpawn("WorldSpawn.Yaw" + WorldName, Float.valueOf(l.getYaw()).toString());
+                	getConfig().set("WorldSpawns." + WorldName, true);
+                	setSpawn("WorldSpawns.X" + WorldName, Double.valueOf(l.getBlockX() + 0.5).toString());
+                	setSpawn("WorldSpawns.Y" + WorldName, Double.valueOf(l.getBlockY() + 0.5).toString());
+                	setSpawn("WorldSpawns.Z" + WorldName, Double.valueOf(l.getBlockZ() + 0.5).toString());
+                	setSpawn("WorldSpawns.Pitch" + WorldName, Float.valueOf(l.getPitch()).toString());
+                	setSpawn("WorldSpawns.Yaw" + WorldName, Float.valueOf(l.getYaw()).toString());
+                	confReload();
                 	p.sendMessage(prefix + " World spawn has been set!");
         		} if (args[0].equalsIgnoreCase("firstjoin")) {
                 	Location l = p.getLocation();
-                	int x = l.getBlockX();
-                	int y = l.getBlockY();
-                	int z = l.getBlockZ();
                 	getConfig().set("FirstSpawn.X", Double.valueOf(l.getBlockX() + 0.5));
                 	getConfig().set("FirstSpawn.Y", Double.valueOf(l.getBlockY() + 0.5));
                 	getConfig().set("FirstSpawn.Z", Double.valueOf(l.getBlockZ() + 0.5));
                 	getConfig().set("FirstSpawn.Yaw", Float.valueOf(l.getYaw()));
                 	getConfig().set("FirstSpawn.Pitch", Float.valueOf(l.getPitch()));
                 	getConfig().set("FirstSpawn.World", String.valueOf(l.getWorld().getName()));
-                	p.getWorld().setSpawnLocation(x, y, z);
                 	p.sendMessage(prefix + ChatColor.GREEN + "First join spawn set!");
                 	confReload();
         		}
