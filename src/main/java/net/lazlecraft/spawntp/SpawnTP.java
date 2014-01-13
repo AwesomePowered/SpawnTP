@@ -1,5 +1,7 @@
 package net.lazlecraft.spawntp;
 
+import java.io.IOException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -53,6 +55,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	public String clearChat = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";//lol
 	public String prefix;
 	public String realPrefix = ChatColor.GOLD +""+ ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "SpawnTP" + ChatColor.GOLD + ChatColor.BOLD + "] ";
+	public String debug = "[STPDebug]";
 	
 	
 	public void onEnable() {
@@ -93,14 +96,19 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		this.saveConfig();
 		this.reloadConfig();
 	}
+	
+	public void metrics() {
+		try {
+		    MetricsLite metrics = new MetricsLite(this);
+		    metrics.start();
+		} catch (IOException e) {
+		    // Failed to submit the stats :-(
+		}
+	}
 
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("You may not use SpawnTP commands, console!");
-            return false;
-        }   
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {   
     	Player p = (Player)sender;
-        if (((commandLabel.equalsIgnoreCase("setspawn")) || commandLabel.equalsIgnoreCase("sss")) && (sender.hasPermission("spawntp.setspawn"))) {
+        if (((commandLabel.equalsIgnoreCase("setspawn")) || commandLabel.equalsIgnoreCase("sss")) && (sender.hasPermission("spawntp.setspawn")) && (sender instanceof Player)) {
         	if (args.length == 0) {
         	Location l = p.getLocation();
         	getConfig().set("Spawn.X", Double.valueOf(l.getBlockX() + 0.5));
@@ -109,7 +117,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	getConfig().set("Spawn.Yaw", Float.valueOf(l.getYaw()));
         	getConfig().set("Spawn.Pitch", Float.valueOf(l.getPitch()));
         	getConfig().set("Spawn.World", String.valueOf(l.getWorld().getName()));
-        	p.sendMessage(prefix + ChatColor.GREEN + "Spawn set!");
+        	p.sendMessage(realPrefix + ChatColor.GREEN + "Spawn set!");
         	confReload();
         	} else if (args.length == 1) {
         		if (args[0].equalsIgnoreCase("world")) {
@@ -126,7 +134,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
                 	setSpawn("WorldSpawns.Pitch" + WorldName, Float.valueOf(l.getPitch()).toString());
                 	setSpawn("WorldSpawns.Yaw" + WorldName, Float.valueOf(l.getYaw()).toString());
                 	confReload();
-                	p.sendMessage(prefix + " World spawn has been set!");
+                	p.sendMessage(realPrefix + " World spawn has been set!");
         		} if (args[0].equalsIgnoreCase("firstjoin")) {
                 	Location l = p.getLocation();
                 	getConfig().set("FirstSpawn.X", Double.valueOf(l.getBlockX() + 0.5));
@@ -135,8 +143,10 @@ public class SpawnTP extends JavaPlugin implements Listener {
                 	getConfig().set("FirstSpawn.Yaw", Float.valueOf(l.getYaw()));
                 	getConfig().set("FirstSpawn.Pitch", Float.valueOf(l.getPitch()));
                 	getConfig().set("FirstSpawn.World", String.valueOf(l.getWorld().getName()));
-                	p.sendMessage(prefix + ChatColor.GREEN + "First join spawn set!");
+                	p.sendMessage(realPrefix + ChatColor.GREEN + "First join spawn set!");
                 	confReload();
+        		} else {
+        			sender.sendMessage(realPrefix + "You may not set the spawn!");
         		}
         	}
         }
@@ -149,7 +159,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
             			Player pp = sender.getServer().getPlayer(args[0]);
             			sendSpawn(pp);
             		}
-            	else sender.sendMessage(prefix + ChatColor.RED + "Player does not exist!");
+            	else sender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.RED + "Player does not exist!");
         	}
      } 
         else if (commandLabel.equalsIgnoreCase("spawntp")) {
@@ -164,10 +174,10 @@ public class SpawnTP extends JavaPlugin implements Listener {
         	if (getConfig().getBoolean("WorldSpawn." + WorldName.toString())) {
         	Location SpawnLoc = new Location(WorldName, getConfig().getDouble("WorldSpawn.X"+WorldName.getName()), getConfig().getDouble("WorldSpawn.Y"+WorldName.getName()), getConfig().getDouble("WorldSpawn.Z"+WorldName.getName()), getConfig().getInt("WorldSpawn.Yaw"+WorldName.getName()), getConfig().getInt("WorldSpawn.Pitch"+WorldName.getName()));//Fuck the line police!
         	p.teleport(SpawnLoc);
-        	p.sendMessage(prefix + ChatColor.GREEN + " You teleported to the world spawn.");
+        	p.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.GREEN + " You teleported to the world spawn.");
         	} else {
         		p.teleport(p.getWorld().getSpawnLocation().add(.5, .5, .5));
-        		p.sendMessage(prefix + ChatColor.RED + "No world spawn set, you have been sent to default world spawn");
+        		p.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.RED + "No world spawn set, you have been sent to default world spawn");
         	}
         }
         return true;
@@ -271,7 +281,8 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	
 	public void checkConfig() {
 		if (getConfig().getInt("ConfigVersion") != 2) {
-			System.out.println(prefix + " Please reset your config!");
+			Bukkit.getConsoleSender().sendMessage(prefix + " Outdated Config!");
+			Bukkit.getConsoleSender().sendMessage(prefix + " Please reset your config!");
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
 	}
@@ -290,7 +301,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 	    	Location FirstSpawnLoc = new Location(Bukkit.getServer().getWorld(FsWorld), FsX, FsY, FsZ, FsYaw, FsPitch);
 	    	p.teleport(FirstSpawnLoc);
 	    	if (getConfig().getBoolean("LogTeleport")) {
-	    		Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.GOLD + "Sent " + p.getName() + " to First Join Spawn");
+	    		Bukkit.getConsoleSender().sendMessage(realPrefix + ChatColor.GOLD + "Sent " + p.getName() + " to First Join Spawn");
 	    	}
 		}
 	}
@@ -306,7 +317,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
     	Location SpawnLoc = new Location(Bukkit.getServer().getWorld(sWorld), sX, sY, sZ, sYaw, sPitch);
     	p.teleport(SpawnLoc);
     	if (getConfig().getBoolean("LogTeleport")) {
-    		Bukkit.getConsoleSender().sendMessage(prefix + ChatColor.GOLD + "Sent " + p.getName() + " to spawn");
+    		Bukkit.getConsoleSender().sendMessage(realPrefix + ChatColor.GOLD + "Sent " + p.getName() + " to spawn");
     	}
     }
   }
