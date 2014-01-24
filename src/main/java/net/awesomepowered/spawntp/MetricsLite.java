@@ -1,4 +1,4 @@
-package net.lazlecraft.spawntp;
+package net.awesomepowered.spawntp;
 /*
  * Copyright 2011-2013 Tyler Blair. All rights reserved.
  *
