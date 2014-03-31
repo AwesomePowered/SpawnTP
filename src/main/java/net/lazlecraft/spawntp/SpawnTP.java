@@ -64,6 +64,7 @@ public class SpawnTP extends JavaPlugin implements Listener {
 		confReload();
 		getServer().getPluginManager().registerEvents(this, this);
 		checkConfig();
+		metrics();
 	} 
 	
 	public void confReload() {
