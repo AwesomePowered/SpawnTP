@@ -69,11 +69,15 @@ public class Config {
 		sTP = SpawnTP.MainClass().getConfig().getBoolean("SpawnTP");
 		cInv = SpawnTP.MainClass().getConfig().getBoolean("Clear.Inventory");
 		cCht = SpawnTP.MainClass().getConfig().getBoolean("Clear.Chat");
-		oNJ = SpawnTP.MainClass().getConfig().getBoolean("SpawnOnlyNewJoin");
+		oNJ = SpawnTP.MainClass().getConfig().getBoolean("NewPlayers.SendToSpawn");
 		aFJ = SpawnTP.MainClass().getConfig().getBoolean("NewPlayers.Announce");
 		SpawnTP.MainClass().saveConfig();
 		SpawnTP.MainClass().reloadConfig();
 	}
 	
+	
+	public static void setVars(String configLoc, String var) {
+		SpawnTP.MainClass().getConfig().set(configLoc, var);
+	}
 
 }

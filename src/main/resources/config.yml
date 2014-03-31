@@ -1,8 +1,6 @@
 prefix: "&6[&4SpawnTP&6]"
 #Main Feature
 SpawnTP: true
-#New Players
-SpawnOnlyNewJoin: false
 NewPlayers:
     SendToSpawn: true
     Announce: true
@@ -11,8 +9,6 @@ NewPlayers:
 Clear:
     Chat: false
     Inventory: false
-#Should we anounce first join?
-AnnounceFirstJoin: true
 #Custom Messages
 LoginMessages:
     Enabled: false
@@ -38,6 +34,8 @@ Sound:
 DisabledInWorld:
 - Hardcoreworld
 - Nospawnworld
+
+#PLEASE DO NOT TOUCH THE CONFIGS BELOW OR RISK BREAKING THE PLUGIN.
 #Spawn Location
 Spawn:
    World:
@@ -46,7 +44,7 @@ Spawn:
    X:
    Y:
    Z:
-#Spawn Location //Not implemented yet.
+#Spawn Location
 FirstSpawn:
    World:
    Yaw:

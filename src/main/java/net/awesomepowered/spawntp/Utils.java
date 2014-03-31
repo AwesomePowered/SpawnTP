@@ -23,6 +23,7 @@ public class Utils {
 		}
 	}
 	
+	
 	@SuppressWarnings("deprecation")
 	public static void clearInv(Player p) {
 		p.getInventory().clear();
@@ -57,5 +58,33 @@ public class Utils {
 	public static void lunchFirework(Location loc) {
 		
 	}
-
+	
+	public static void setSpawn(Player p, String whichSpawn) {
+    	Location l = p.getLocation();
+	if (whichSpawn.equalsIgnoreCase("main")) {
+    	Config.setVars("Spawn.X", Double.valueOf(l.getBlockX() + 0.5).toString());
+    	Config.setVars("Spawn.Y", Double.valueOf(l.getBlockY() + 0.5).toString());
+    	Config.setVars("Spawn.Z", Double.valueOf(l.getBlockZ() + 0.5).toString());
+    	Config.setVars("Spawn.Yaw", Float.valueOf(l.getYaw()).toString());
+    	Config.setVars("Spawn.Pitch", Float.valueOf(l.getPitch()).toString());
+    	Config.setVars("Spawn.World", String.valueOf(l.getWorld().getName()));
+    	Config.confReload();
+	} else if (whichSpawn.equalsIgnoreCase("world")) {
+		String WorldName = l.getWorld().getName();
+    	Config.setVars("WorldSpawns.X" + WorldName, Double.valueOf(l.getBlockX() + 0.5).toString());
+    	Config.setVars("WorldSpawns.Y" + WorldName, Double.valueOf(l.getBlockY() + 0.5).toString());
+    	Config.setVars("WorldSpawns.Z" + WorldName, Double.valueOf(l.getBlockZ() + 0.5).toString());
+    	Config.setVars("WorldSpawns.Pitch" + WorldName, Float.valueOf(l.getPitch()).toString());
+    	Config.setVars("WorldSpawns.Yaw" + WorldName, Float.valueOf(l.getYaw()).toString());
+    	Config.confReload();
+	} else if (whichSpawn.equalsIgnoreCase("firstjoin")) {
+		Config.setVars("FirstSpawn.X", Double.valueOf(l.getBlockX() + 0.5).toString());
+		Config.setVars("FirstSpawn.Y", Double.valueOf(l.getBlockY() + 0.5).toString());
+		Config.setVars("FirstSpawn.Z", Double.valueOf(l.getBlockZ() + 0.5).toString());
+		Config.setVars("FirstSpawn.Yaw", Float.valueOf(l.getYaw()).toString());
+		Config.setVars("FirstSpawn.Pitch", Float.valueOf(l.getPitch()).toString());
+		Config.setVars("FirstSpawn.World", String.valueOf(l.getWorld().getName()));
+		Config.confReload();
+		}
+	}
 }

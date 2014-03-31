@@ -2,21 +2,14 @@ package net.awesomepowered.spawntp;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.FireworkEffect.Type;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class Listenersz implements Listener {
 	public static SpawnTP plugin;
@@ -52,16 +45,6 @@ public class Listenersz implements Listener {
 	}
 	
 	@EventHandler
-	public void onPJ(PlayerJoinEvent ev) {
-		//Play sound
-		Player p = ev.getPlayer(); 
-		if (Config.sEN) {
-			Location loc = p.getLocation();
-			p.playSound(loc, Sound.valueOf(Config.sSS), Config.sSV, Config.sSP);
-		}
-	}
-	
-	@EventHandler
 	public void onpJoin(PlayerJoinEvent ev)	{
 		Player p = ev.getPlayer();
 		if (Config.cInv) {
@@ -73,6 +56,10 @@ public class Listenersz implements Listener {
 			if (!p.hasPermission("spawntp.noclearchat")) {
 				p.sendMessage(Config.clearChat);
 			}
+		}
+		if (Config.sEN) {
+			Location loc = p.getLocation();
+			p.playSound(loc, Sound.valueOf(Config.sSS), Config.sSV, Config.sSP);
 		}
 	}
 	
